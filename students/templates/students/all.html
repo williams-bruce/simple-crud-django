@@ -1,0 +1,131 @@
+{% extends 'students/base.html' %}
+
+{% block title %}
+All students | Student management system
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="container-fluid">
+        <h1 class="text-center m-3">
+            See all of our students!
+        </h1>
+    </div>
+    {% if students %}
+    <table class="table m-4">
+        <thead>
+        <tr>
+            <th scope="col">Student Number</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">email</th>
+            <th scope="col">Field of study</th>
+            <th scope="col">GPA</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+                <tr>
+                    <td>{{ student.student_number }}</td>
+                    <td>{{ student.first_name }}</td>
+                    <td>{{ student.last_name }}</td>
+                    <td>{{ student.email }}</td>
+                    <td>{{ student.field_of_study }}</td>
+                    <td>{{ student.gpa }}</td>
+                    <td>
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#infoStudent{{student.id}}"><i class="fa-solid fa-circle-info"></i></button>
+                        <a href="{% url 'update' student.id %}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteStudent{{student.id}}"><i class="fa-solid fa-trash-can"></i></button>
+                    </td>
+                </tr>
+
+                <!-- Modal info -->
+                <div class="modal fade" id="infoStudent{{student.id}}" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="exampleModalLabel"><strong>Student information</strong></h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <ol class="list-group list-group-numbered">
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Number</div>
+                                      {{ student.student_number }}
+                                    </div>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">First Name</div>
+                                      {{ student.first_name }}
+                                    </div>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Last Name</div>
+                                      {{ student.last_name }}
+                                    </div>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Email</div>
+                                      {{ student.email }}
+                                    </div>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">Field of Study</div>
+                                      {{ student.field_of_study }}
+                                    </div>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                      <div class="fw-bold">GPA</div>
+                                      {{ student.gpa }}
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <!-- End Modal info -->
+
+                <!-- Modal delete -->
+                <div class="modal fade" id="deleteStudent{{student.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Student</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          You're about to delete all data of the student <strong>{{student.first_name}} {{student.last_name}}</strong>.
+                          Are you sure of that? This action cannot be undone.
+                        </div>
+                        <div class="modal-footer">
+                            <form action="{% url 'delete' student.id %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger" value="Delete">Delete</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- End Modal delete -->
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-danger m-3" role="alert">
+        Não há alunos cadastrados!
+    </div>
+</div>
+{% endif %}
+{% endblock %}

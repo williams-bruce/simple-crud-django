@@ -1,0 +1,33 @@
+{% extends 'students/base.html' %}
+
+{% block title %}
+Update student | Student management system
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h1 class="text-center m-4">Update student</h1>
+    {% if success %}
+    <div class="alert alert-success m-4 p-4">
+        The student was updated successfuly!
+        <a class="alert-link" href="{% url 'home' %}">Go to homepage</a>
+    </div>
+    {% else %}
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa-solid fa-address-card fa-lg"></i> Update the fields
+                </div>
+                <form class="mx-4 p-4" action="" method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button class="btn btn-primary" type="submit">Update</button>
+                    <a class="btn btn-secondary" href="{% url 'home' %}">Cancel</a>
+                </form>
+              </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

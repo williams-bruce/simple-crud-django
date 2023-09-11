@@ -1,0 +1,16 @@
+{% extends 'students/base.html' %}
+
+{% block title %}
+Student management system | home
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    {% if success %}
+    <div class="alert alert-info m-3">
+        The student was successfuly deleted!
+    </div>
+    {% endif %}
+    <h1 class="text-center m-5">Welcome to the Student management system!</h1>
+</div>
+{% endblock %}
